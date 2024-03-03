@@ -1,7 +1,4 @@
 {
-  "devDependencies": {
-    "typescript": "^5.3.3"
-  },
   "name": "pratiquei-exame",
   "description": "Pratique exames de múltipla escolha.",
   "version": "1.0.0",
@@ -15,10 +12,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/express": "^4.17.21",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
     "nodemon": "^3.1.0",
-    "ts-node": "^10.9.2"
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.2.1",
+    "ts-node": "^10.9.2",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3"
   }
 }

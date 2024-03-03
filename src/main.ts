@@ -1,14 +1,17 @@
 import express from 'express';
+import 'reflect-metadata';
 import appRouter from './application/router/index';
+import { AppDataSource } from './infrastructure/data-source';
 
 require('dotenv').config();
-
 const app = express();
 
 const APP_PORT = process.env['APP_PORT'] || "3000";
 
 async function bootstrap() {
 	console.time('Restart');
+
+	AppDataSource.initialize();
 
 	app.use(appRouter);
 
