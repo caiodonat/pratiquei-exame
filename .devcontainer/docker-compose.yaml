@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sleep infinity
+    restart: on-failure
+    networks:
+      - backend
+    volumes:
+      - ../..:/workspaces:cached
+
+  db:
+    image: postgres:15.4
+    restart: unless-stopped
+    volumes:
+      - psql-data:/var/lib/postgresql/data
+    networks:
+      - backend
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+
+networks:
+  backend:
+
+volumes:
+  psql-data:

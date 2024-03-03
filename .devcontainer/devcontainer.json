@@ -1,0 +1,33 @@
+{
+	"name": "ts-express-typeorm-psql-docker",
+	"dockerComposeFile": "docker-compose.yaml",
+	"service": "app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// @todo try `alpine-node`
+	"features": {
+		"ghcr.io/devcontainers/features/git": {},
+		"ghcr.io/devcontainers-contrib/features/prisma:2": {}
+	},
+	
+	"forwardPorts": [
+		3333, // Application
+	], 
+	
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+			]
+		}
+	},
+	
+	// Lifecycle scripts
+	"postCreateCommand": [
+		// sudo wget -qO tokei.tar.gz https://github.com/XAMPPRocky/tokei/releases/latest/download/tokei-x86_64-unknown-linux-gnu.tar.gz
+		// sudo tar xf tokei.tar.gz -C /usr/local/bin
+		// sudo rm -r tokei.tar.gz
+	],
+	
+	"postAttachCommand" : "echo Successes started..."
+}
