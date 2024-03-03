@@ -11,7 +11,7 @@ const APP_PORT = process.env['APP_PORT'] || "3000";
 async function bootstrap() {
 	console.time('Restart');
 
-	AppDataSource.initialize();
+	// AppDataSource.initialize();
 
 	app.use(appRouter);
 

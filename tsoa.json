@@ -1,0 +1,25 @@
+{
+	"entryFile": "src/main.ts",
+	"noImplicitAdditionalProperties": "throw-on-extras",
+	"controllerPathGlobs": [
+		"src/**/*.controller.ts"
+	],
+	"spec": {
+		"outputDirectory": "docs",
+		"specVersion": 3
+	},
+	"routes": {
+		"routesDir": "dist"
+	},
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"@foo/bar": [
+				"./src/"
+			],
+			"@foo/bar/*": [
+				"./src/*"
+			]
+		}
+	}
+}

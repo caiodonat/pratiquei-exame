@@ -11,7 +11,6 @@ export class ExamRepository {
 	}
 
 	public async selectExam(id: string) {
-
 		return await this._ds.findOneBy({
 			id: id
 		});
@@ -20,6 +19,4 @@ export class ExamRepository {
 	public async selectAllExam() {
 		return await this._ds.find();
 	}
-
-
 }

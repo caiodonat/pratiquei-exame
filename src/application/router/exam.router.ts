@@ -1,30 +1,32 @@
 import type { Request, Response } from 'express';
 import express from 'express';
-import { ExamService } from '../../domain/service/exam.service';
+import { ExamController } from '../controller/exam.controller';
+import { Exam } from '../../domain/entity/Exam';
 
 
 const router = express.Router();
-const _service = new ExamService();
+const _controller = new ExamController();
 
 router.get("/post", async (req: Request, res: Response) => {
+	const body: Exam = req.body;
+
 	return res.status(200).send(
-		await _service.newExamTeste()
-	)
+		await _controller.postExam(body)
+	);
 });
 
 router.get("/all", async (req: Request, res: Response) => {
-
 	return res.status(200).send(
-		await _service.findAllExam()
-	)
+		await _controller.getAllExam()
+	);
 });
 
 router.get("/:id", async (req: Request, res: Response) => {
 	const id = req.params.id;
 
 	return res.status(200).send(
-		await _service.findExam(id)
-	)
+		await _controller.getExam(id)
+	);
 });
 
 export default router;

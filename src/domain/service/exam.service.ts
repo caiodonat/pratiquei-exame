@@ -10,8 +10,7 @@ export class ExamService {
 		this._repository = new ExamRepository();
 	}
 
-	public async newExamTeste(
-	): Promise<Exam | null> {
+	public async newExamTeste(newEntity: Exam): Promise<Exam | null> {
 
 		// fake
 		const newExam = new Exam();
