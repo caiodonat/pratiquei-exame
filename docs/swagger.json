@@ -28,6 +28,24 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"ICreateExamDTO": {
+				"properties": {
+					"title": {
+						"type": "string",
+						"description": "Título"
+					},
+					"area": {
+						"type": "string",
+						"description": "Área de estudo"
+					}
+				},
+				"required": [
+					"title",
+					"area"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -42,7 +60,49 @@
 		"contact": {}
 	},
 	"paths": {
-		"/exam/all": {
+		"/exams": {
+			"post": {
+				"operationId": "PostExam",
+				"responses": {
+					"201": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Exam"
+										},
+										{
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Exam"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ICreateExamDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/exams/all": {
 			"get": {
 				"operationId": "GetAllExam",
 				"responses": {
@@ -60,8 +120,47 @@
 						}
 					}
 				},
+				"tags": [
+					"Exam"
+				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/exams/{id}": {
+			"get": {
+				"operationId": "GetExam",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Exam"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Exam"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},

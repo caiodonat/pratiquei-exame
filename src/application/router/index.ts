@@ -3,7 +3,11 @@ import swaggerUi from "swagger-ui-express";
 import exam from './exam.router';
 import swaggerDocs from "../../../docs/swagger.json";
 
+
 const appRouters = express();
+
+// appRouters.use(cookieParser());
+appRouters.use(express.json());
 
 appRouters.get("/", async (req: Request, res: Response) => {
 	return res.redirect("/swagger");
@@ -18,6 +22,6 @@ appRouters.use("/swagger", swaggerUi.serve, async (req: Request, res: Response) 
 	));
 });
 
-appRouters.use('/exam', exam);
+appRouters.use('/exams', exam);
 
 export default appRouters;

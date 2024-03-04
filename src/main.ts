@@ -1,7 +1,6 @@
 import express from 'express';
 import 'reflect-metadata';
 import appRouter from './application/router/index';
-import { AppDataSource } from './infrastructure/data-source';
 
 require('dotenv').config();
 const app = express();

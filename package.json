@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ts-node src/main.ts",
     "start:dev": "nodemon src/main.ts",
+    "docs:build": "tsoa spec-and-routes",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -1,34 +1,39 @@
 import { ExamRepository } from "../../infrastructure/repository/exam.repository";
-import { Exam } from "../entity/Exam";
+import { Exam } from "../entity/exam/Exam";
+import { ICreateExamDTO as CreateExamDTO } from "../entity/exam/create-exam.dto";
+import NotificationContext from "../validators/notificationContext.validators";
 
 
 export class ExamService {
 
 	private readonly _repository: ExamRepository;
 
+	private _contextErrors: NotificationContext;
+
 	constructor() {
 		this._repository = new ExamRepository();
+		this._contextErrors = new NotificationContext();
+
 	}
 
-	public async newExamTeste(newEntity: Exam): Promise<Exam | null> {
+	public async newExamTeste(newEntity: CreateExamDTO): Promise<Exam | NotificationContext> {
+		try {
+			const newExam = new CreateExamDTO(newEntity);
 
-		// fake
-		const newExam = new Exam();
-		newExam.id = '51dcfc83-5fe5-4b27-a46b-5275b7dcb426';
-		newExam.area = 'EC 1';
-		newExam.title = 'AOP 1';
+			const validated = await newExam.validateAsync();
+			this._contextErrors.addNotification(validated);
 
-
-		return await this._repository.createExam(newExam);
+			if (!this._contextErrors.hasNotifications()) {
+				return await this._repository.createExam(newExam.convert());
+			} else {
+				return this._contextErrors;
+			}
+		} catch (ex) {
+			return this._contextErrors;
+		}
 	}
 
-	public async findExam(
-		id: string
-	): Promise<Exam | null> {
-
-		/*
-			validations...
-		*/
+	public async findExam(id: string): Promise<Exam | null> {
 
 		return await this._repository.selectExam(id);
 	}

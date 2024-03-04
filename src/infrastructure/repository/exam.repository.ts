@@ -1,4 +1,4 @@
-import { Exam } from "../../domain/entity/Exam";
+import { Exam } from "../../domain/entity/exam/Exam";
 import { AppDataSource } from "../data-source";
 
 
