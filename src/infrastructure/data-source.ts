@@ -1,5 +1,7 @@
 import { DataSource } from "typeorm";
-import { Exam } from "../domain/entity/exam/Exam";
+import { Exam } from "../domain/entity/exam/exam.entity";
+import { Question } from "../domain/entity/question/question.entity";
+import { Alternative } from "../domain/entity/alternative/alternative.entity";
 
 require('dotenv').config();
 
@@ -13,7 +15,7 @@ export const AppDataSource = new DataSource({
 	database: process.env['DB_DATABASE'],
 	synchronize: true,
 	logging: ['error'],
-	entities: [Exam],
+	entities: [Exam, Question, Alternative],
 	subscribers: [],
 	migrations: [],
 })

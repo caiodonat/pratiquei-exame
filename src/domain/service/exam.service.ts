@@ -1,6 +1,6 @@
 import { ExamRepository } from "../../infrastructure/repository/exam.repository";
-import { Exam } from "../entity/exam/Exam";
-import { ICreateExamDTO as CreateExamDTO } from "../entity/exam/create-exam.dto";
+import { Exam } from "../entity/exam/exam.entity";
+import { CreateExamDTO as CreateExamDTO } from "../entity/exam/create-exam.dto";
 import NotificationContext from "../validators/notificationContext.validators";
 
 
@@ -17,25 +17,39 @@ export class ExamService {
 	}
 
 	public async newExamTeste(newEntity: CreateExamDTO): Promise<Exam | NotificationContext> {
-		try {
-			const newExam = new CreateExamDTO(newEntity);
+		// try {
+		console.debug(newEntity);
 
-			const validated = await newExam.validateAsync();
-			this._contextErrors.addNotification(validated);
+		const newExam = new CreateExamDTO(newEntity);
 
-			if (!this._contextErrors.hasNotifications()) {
-				return await this._repository.createExam(newExam.convert());
-			} else {
-				return this._contextErrors;
-			}
-		} catch (ex) {
+		const validated = await newExam.validateAsync();
+		this._contextErrors.addNotification(validated);
+
+		if (this._contextErrors.hasNotifications()) {
+			console.debug('_contextErrors');
 			return this._contextErrors;
 		}
+
+		return await this._repository.createExam(newExam);
+		// } catch (ex) {
+		// 	this._contextErrors.addNotification([`${ex}`]);
+		// 	return this._contextErrors;
+		// }
 	}
 
 	public async findExam(id: string): Promise<Exam | null> {
-
 		return await this._repository.selectExam(id);
+	}
+
+	public async findExamFull(id: string): Promise<Exam | NotificationContext> {
+		try {
+			return await this._repository.selectExamFull(id);
+
+
+		} catch (ex) {
+			this._contextErrors.addNotification([`${ex}`]);
+			return this._contextErrors;
+		}
 	}
 
 	public async findAllExam(): Promise<Exam[]> {

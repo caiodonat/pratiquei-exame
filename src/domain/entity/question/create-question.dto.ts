@@ -1,43 +1,52 @@
 import { MinLength, ValidateNested, ValidationError, validate, validateOrReject } from "class-validator";
-import { Exam } from "./exam.entity";
+import { QUESTION_TYPE, Question } from "./question.entity";
 import { randomUUID } from "crypto";
-// import { Question } from "../question/question.entity";
-import { CreateQuestionDTO, IInputCreateQuestionDTO } from "../question/create-question.dto";
+import { Exam } from "../exam/exam.entity";
 import { Type } from "class-transformer";
+// import { Alternative } from "../alternative/alternative.entity";
+// import { Question } from "../question/question.entity";
 
-export interface IInputCreateExamDTO {
+export interface IInputCreateQuestionDTO {
 
-	title: string;
+	exam?: Exam
 
-	courseDisciplineCode: string;
+	subject: string;
 
-	questions?: IInputCreateQuestionDTO[];
+	description?: string;
+
+	type: QUESTION_TYPE;
+
 }
 
 
-export class CreateExamDTO implements IInputCreateExamDTO {
+export class CreateQuestionDTO implements IInputCreateQuestionDTO {
 
-	constructor(data: CreateExamDTO) {
-		this.title = data.title;
-		this.courseDisciplineCode = data.courseDisciplineCode;
-		this.questions = data.questions;
+	constructor(data: CreateQuestionDTO) {
+		this.subject = data.subject;
+		this.description = data.description;
+		this.type = data.type;
+		// this.alternative = data.alternative;
 	}
 
-	/** Título */
+	@ValidateNested()
+	@Type(() => Exam)
+	exam?: Exam | undefined;
+
+	/** Enunciado */
 	@MinLength(3, {
-		message: '"Título" deve ser maior que $constraint1'
+		message: '"Enunciado" deve conter mais que $constraint1 caracteres'
 	})
-	title: string;
+	subject: string;
 
 	/** Código da Disciplina */
 	@MinLength(3, {
-		message: '"Disciplina" deve ser maior que $constraint1'
+		message: '"Disciplina" deve conter mais que $constraint1 caracteres'
 	})
-	courseDisciplineCode: string;
+	description: string;
 
-	@ValidateNested({ each: true })
-	@Type(() => CreateQuestionDTO)
-	questions?: CreateQuestionDTO[] | undefined;
+	type: QUESTION_TYPE;
+
+	// alternative?: Alternative[] | undefined;
 
 
 	public validate(): string[] {
@@ -62,7 +71,6 @@ export class CreateExamDTO implements IInputCreateExamDTO {
 		try {
 			await validateOrReject(this);
 		} catch (ex) {
-			console.warn(ex);
 			result = this.prettifyErrors(ex as ValidationError[]);
 		}
 
@@ -83,16 +91,16 @@ export class CreateExamDTO implements IInputCreateExamDTO {
 		return errors;
 	}
 
-	public convert(): Exam {
-		const newExam = new Exam();
+	public convert(): Question {
+		const newQuestion = new Question();
 
-		newExam.id = randomUUID();
-		newExam.title = this.title;
-		newExam.courseDisciplineCode = this.courseDisciplineCode;
-		newExam.questions = newExam.questions;
+		newQuestion.id = randomUUID();
+		newQuestion.subject = this.subject;
+		newQuestion.type = this.type;
+		newQuestion.description = newQuestion.description;
 
 		// if (this.questions && this.questions?.length > 0) {
-		// 	console.debug(newExam.questions?.length);
+		// 	console.debug(newQuestion.questions?.length);
 
 		// 	for (let i = 0; i < this.questions.length; i++) {
 		// 		const questionI = this.questions[i];
@@ -102,10 +110,10 @@ export class CreateExamDTO implements IInputCreateExamDTO {
 		// 		newQuestion.subject = questionI.subject;
 		// 		newQuestion.type = questionI.type;
 
-		// 		newExam.questions.push(newQuestion);
+		// 		newQuestion.questions.push(newQuestion);
 		// 	}
 		// }
 
-		return newExam;
+		return newQuestion;
 	}
 }

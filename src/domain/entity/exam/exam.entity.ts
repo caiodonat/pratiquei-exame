@@ -1,5 +1,6 @@
 import { IsUUID } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Question } from '../question/question.entity';
 // import { ICreateExamDTO } from './create-exam.dto';
 // import { randomUUID } from 'crypto';
 
@@ -19,10 +20,9 @@ export class Exam {
 
 	/** Área de estudo */
 	@Column()
-	area: string;
+	courseDisciplineCode: string;
 
-	// /** Questões */
-	// questions?: {
-
-	// }
+	/** _Questões_ */
+	@OneToMany(() => Question, (question) => question.exam, { cascade: true })
+	questions?: Question[]
 }

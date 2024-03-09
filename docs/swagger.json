@@ -7,6 +7,42 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"Question": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"exam": {
+						"$ref": "#/components/schemas/Exam"
+					},
+					"subject": {
+						"type": "string",
+						"description": "Enunciado da _Questão_"
+					},
+					"description": {
+						"type": "string",
+						"description": "Descrição da _Questão_"
+					},
+					"type": {
+						"$ref": "#/components/schemas/QUESTION_TYPE",
+						"description": "Tipos de _Questão_"
+					},
+					"alternatives": {
+						"items": {
+							"$ref": "#/components/schemas/Alternative"
+						},
+						"type": "array",
+						"description": "_Alternativas da Questão_"
+					}
+				},
+				"required": [
+					"id",
+					"subject",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Exam": {
 				"properties": {
 					"id": {
@@ -16,15 +52,78 @@
 						"type": "string",
 						"description": "Título"
 					},
-					"area": {
+					"courseDisciplineCode": {
 						"type": "string",
 						"description": "Área de estudo"
+					},
+					"questions": {
+						"items": {
+							"$ref": "#/components/schemas/Question"
+						},
+						"type": "array",
+						"description": "_Questões_"
 					}
 				},
 				"required": [
 					"id",
 					"title",
-					"area"
+					"courseDisciplineCode"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"QUESTION_TYPE": {
+				"enum": [
+					"MULTIPLE_SINGLE",
+					"MULTIPLE_MANY",
+					"DISCURSIVE",
+					"TEXT"
+				],
+				"type": "string"
+			},
+			"Alternative": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"question": {
+						"$ref": "#/components/schemas/Question"
+					},
+					"subject": {
+						"type": "string",
+						"description": "Enunciado da _Questão_"
+					},
+					"isCorrect": {
+						"type": "boolean",
+						"description": "Alternativa é correta ?"
+					}
+				},
+				"required": [
+					"id",
+					"subject",
+					"isCorrect"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICreateQuestionDTO": {
+				"properties": {
+					"subject": {
+						"type": "string",
+						"description": "Título"
+					},
+					"description": {
+						"type": "string",
+						"description": "Código da Disciplina"
+					},
+					"type": {
+						"$ref": "#/components/schemas/QUESTION_TYPE"
+					}
+				},
+				"required": [
+					"subject",
+					"type",
+					"description"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -35,14 +134,20 @@
 						"type": "string",
 						"description": "Título"
 					},
-					"area": {
+					"courseDisciplineCode": {
 						"type": "string",
-						"description": "Área de estudo"
+						"description": "Código da Disciplina"
+					},
+					"questions": {
+						"items": {
+							"$ref": "#/components/schemas/ICreateQuestionDTO"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
 					"title",
-					"area"
+					"courseDisciplineCode"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -60,6 +165,108 @@
 		"contact": {}
 	},
 	"paths": {
+		"/questions/all": {
+			"get": {
+				"operationId": "GetAllQuestion",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Question"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Question"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/questions/{id}": {
+			"get": {
+				"operationId": "GetQuestion",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Question"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Question"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/questions/{id}/full": {
+			"get": {
+				"operationId": "GetQuestionFull",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Question"
+										},
+										{
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Question"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/exams": {
 			"post": {
 				"operationId": "PostExam",
@@ -142,6 +349,47 @@
 										}
 									],
 									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Exam"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/exams/{id}/full": {
+			"get": {
+				"operationId": "GetExamFull",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Exam"
+										},
+										{
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									]
 								}
 							}
 						}

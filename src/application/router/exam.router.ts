@@ -19,6 +19,12 @@ router.get("/all", async (req: Request, res: Response) => {
 	);
 });
 
+router.get("/:id/full", async (req: Request, res: Response) => {
+	const id = req.params.id;
+
+	return await _controller.getExamFull(req, res, id);
+});
+
 router.get("/:id", async (req: Request, res: Response) => {
 	const id = req.params.id;
 

@@ -1,6 +1,7 @@
 import express, {Request, Response} from "express";
 import swaggerUi from "swagger-ui-express";
 import exam from './exam.router';
+import question from './question.router';
 import swaggerDocs from "../../../docs/swagger.json";
 
 
@@ -23,5 +24,6 @@ appRouters.use("/swagger", swaggerUi.serve, async (req: Request, res: Response) 
 });
 
 appRouters.use('/exams', exam);
+appRouters.use('/questions', question);
 
 export default appRouters;

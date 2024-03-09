@@ -3,18 +3,60 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { QuestionController } from './../src/application/controller/question.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ExamController } from './../src/application/controller/exam.controller';
 import type { RequestHandler, Router } from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "Question": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "exam": {"ref":"Exam"},
+            "subject": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+            "type": {"ref":"QUESTION_TYPE","required":true},
+            "alternatives": {"dataType":"array","array":{"dataType":"refObject","ref":"Alternative"}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Exam": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string","required":true},
             "title": {"dataType":"string","required":true},
-            "area": {"dataType":"string","required":true},
+            "courseDisciplineCode": {"dataType":"string","required":true},
+            "questions": {"dataType":"array","array":{"dataType":"refObject","ref":"Question"}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "QUESTION_TYPE": {
+        "dataType": "refEnum",
+        "enums": ["MULTIPLE_SINGLE","MULTIPLE_MANY","DISCURSIVE","TEXT"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Alternative": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "question": {"ref":"Question"},
+            "subject": {"dataType":"string","required":true},
+            "isCorrect": {"dataType":"boolean","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ICreateQuestionDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "subject": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "type": {"ref":"QUESTION_TYPE","required":true},
         },
         "additionalProperties": false,
     },
@@ -23,7 +65,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "title": {"dataType":"string","required":true},
-            "area": {"dataType":"string","required":true},
+            "courseDisciplineCode": {"dataType":"string","required":true},
+            "questions": {"dataType":"union","subSchemas":[{"dataType":"array","array":{"dataType":"refObject","ref":"ICreateQuestionDTO"}},{"dataType":"undefined"}]},
         },
         "additionalProperties": false,
     },
@@ -38,6 +81,80 @@ export function RegisterRoutes(app: Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+        app.get('/questions/all',
+            ...(fetchMiddlewares<RequestHandler>(QuestionController)),
+            ...(fetchMiddlewares<RequestHandler>(QuestionController.prototype.getAllQuestion)),
+
+            function QuestionController_getAllQuestion(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new QuestionController();
+
+
+              const promise = controller.getAllQuestion.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/questions/:id',
+            ...(fetchMiddlewares<RequestHandler>(QuestionController)),
+            ...(fetchMiddlewares<RequestHandler>(QuestionController.prototype.getQuestion)),
+
+            function QuestionController_getQuestion(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new QuestionController();
+
+
+              const promise = controller.getQuestion.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/questions/:id/full',
+            ...(fetchMiddlewares<RequestHandler>(QuestionController)),
+            ...(fetchMiddlewares<RequestHandler>(QuestionController.prototype.getQuestionFull)),
+
+            function QuestionController_getQuestionFull(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new QuestionController();
+
+
+              const promise = controller.getQuestionFull.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/exams',
             ...(fetchMiddlewares<RequestHandler>(ExamController)),
             ...(fetchMiddlewares<RequestHandler>(ExamController.prototype.postExam)),
@@ -106,6 +223,31 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.getExam.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/exams/:id/full',
+            ...(fetchMiddlewares<RequestHandler>(ExamController)),
+            ...(fetchMiddlewares<RequestHandler>(ExamController.prototype.getExamFull)),
+
+            function ExamController_getExamFull(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new ExamController();
+
+
+              const promise = controller.getExamFull.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
