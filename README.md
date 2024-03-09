@@ -2,18 +2,10 @@
 
 Pratique exames de múltipla escolha.
 
-## Objetivo técnico:
+Uma plataforma aonde você poderá praticar todos (ou quase todos) os **exames** presentes no decorrer do nosso curso `ADS`.
 
-- Testar `Notification Pattern`.
-  
-	Base: [Não lance Exceptions em seu Domínio… Use Notifications!
-](https://medium.com/tableless/n%C3%A3o-lance-exceptions-em-seu-dom%C3%ADnio-use-notifications-70b31f7148d3)
 
-- Testar `TypeORM` invés de `Prisma`.
-
-- Testar `class-validator` invés de `Zod`.
-
----
+## Informação
 
 ### Tech Stack
 
@@ -56,6 +48,39 @@ src
 
 ---
 
+### Objetivo técnico
+
+- Testar `Notification Pattern`.
+  
+	Base: [Não lance Exceptions em seu Domínio… Use Notifications!
+](https://medium.com/tableless/n%C3%A3o-lance-exceptions-em-seu-dom%C3%ADnio-use-notifications-70b31f7148d3)
+
+- Testar `TypeORM` invés de `Prisma`.
+
+- Testar `class-validator` invés de `Zod`.
+
+---
+
+## Getting Started
+
+Required has `.env` file properly configured (see []())
+
+```bash
+
+```
+
+## Environment Variables
+
+To run this project you will need to have the following variables in your `.env` file.
+
+- `DB_HOST`
+- `DB_PORT`
+- `DB_DATABASE`
+- `DB_USERNAME`
+- `DB_PASSWORD`
+
+> To have a example of `.env` file, see [`.env.example`](.env.example) in boot dir.
+
 ## Nomenclatura
 
 ### `Entity` e `Model`
@@ -65,7 +90,10 @@ src
 
 `Modelo`: Um modelo normalmente representa um objeto do mundo real relacionado ao problema ou espaço de domínio. Na programação, criamos classes para representar objetos. Essas classes, conhecidas como modelos, possuem algumas propriedades e métodos (definindo o comportamento dos objetos).
 
-
-
-
 fonte: [What is difference between a Model and an Entity | Stack Overflow](https://stackoverflow.com/a/39425005/16245809)
+
+---
+
+<!-- 
+tokei --exclude 'package*.json' 'docs/*' --sort code
+-->
